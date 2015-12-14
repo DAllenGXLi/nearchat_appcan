@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/fonts/font-awesome.min.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-color.css">
+        <link rel="stylesheet" href="css/appcan.icon.css">
+        <link rel="stylesheet" href="css/appcan.control.css">
+        <link rel="stylesheet" href="index_content/css/main.css">
+         <script src="./socket.io/node_modules/socket.io-client/socket.io.js"></script>
+        
+    </head>
+    <body class="um-vp bc-bg" ontouchstart>
+        <div class="ub ub-ver uinn-a3 ub-fv">
+            <div class="ub ub-ver uinn uinn-at1">
+                    <div class="umar-a uba bc-border c-wh">
+                        <div class="ub ub-ac ubb umh5 bc-border ">
+                            <div class=" uinput ub ub-f1">
+                                <div class="uinn fa fa-user sc-text"></div>
+                                <input placeholder="用户名" type="text" class="ub-f1" id="username">
+                            </div>
+                        </div>
+                        <!-- <div class="ub ub-ac umh5 bc-border ">
+                            <div class=" uinput ub ub-f1">
+                                <div class="uinn fa fa-lock sc-text"></div>
+                                <input placeholder="密码" type="password" id="password" class="umw4 ub-f1">
+
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="ub ub-ver">
+                       
+                        <div class="uinn-at1">
+                            <div class="btn ub ub-ac bc-text-head ub-pc bc-btn uc-a1" id="login">
+                                登录
+                            </div>
+                             <!-- <div style="margin-top:0.5em" class="btn ub ub-ac bc-text-head ub-pc or-btn uc-a1" id="register">
+                                注册
+                            </div> -->
+                        </div>
+                        <div class="uinn-at2 ub sc-text-active ulev-4">
+                         
+                        </div>
+                    </div>
+                    <button type="submit"class="uinvisible"></button>
+               
+
+            </div>
+
+        </div>
+    
+
+        <script src="js/appcan.js"></script>
+        <script src="js/appcan.control.js"></script>
+    </body>
+    <script>
+     var socket = io.connect('http://127.0.0.1:3010');  
+     
+     socket.on("username exist", function(data){
+         alert('the username have been existed');
+     });
+     
+     socket.on("register suceess", function(data){
+         alert('register successfully');
+     });
+
+     socket.on("no username", function(data){
+         alert('this user have not been registered');
+     });
+     
+     socket.on("login suceess", function(data){
+          appcan.locStorage.setVal('nearchatUsername',$("#username").val());
+           appcan.locStorage.setVal('nearchatPassword',$("#password").val());
+         appcan.window.open({
+                 name:"chat",
+                 dataType:0,
+                 aniId:2,
+                 data:"chat.html"
+            });
+     });
+     
+
+     
+     socket.on('login fail', function(data){
+         alert('login failed');
+     });
+     
+     socket.on('you can login', function(data){
+           appcan.locStorage.setVal('nearchatUsername', $("#username").val());
+           appcan.window.open({
+                 name:"chat",
+                 dataType:0,
+                 aniId:2,
+                 data:"chat.html",    
+            });
+     });
+     
+       socket.on('you can not login', function(data){
+           alert('用户名已存在');
+     });
+     
+        appcan.ready(function() {
+            appcan.initBounce();
+ 
+            
+        });
+        
+        appcan.button("#login", "ani-act", function() {
+           var username = $("#username").val();
+        
+           // var password = $("#password").val();
+           // if(username == '' || password == '' ) {
+               // alert('username or password can not be blank');
+           // }
+           // else {
+                // socket.emit("login", {username: username, password: password });    
+           // }
+           if(username == '') {
+               alert('请输入用户名');
+               return;
+           }
+           else {
+                socket.emit("login", {username: username});   
+           }
+        });
+
+        appcan.button("#register", "ani-act", function() {
+            var username = $("#username").val();
+           var password = $("#password").val();
+           if(username == '' || password == '' ) {
+               alert('username or password can not be blank');
+                appcan.window.open({
+                 name:"chatroom",
+                 dataType:0,
+                 aniId:2,
+                 data:"chatroom.html"
+            });
+               
+            
+           }
+           else {
+                socket.emit("register", {username: username, password: password });    
+           }
+        });
+      
+   appcan.button(".btn", "ani-act", function() {
+            
+})
+ </script>
+</html>

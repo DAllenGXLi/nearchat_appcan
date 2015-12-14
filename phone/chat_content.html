@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/fonts/font-awesome.min.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-color.css">
+        <link rel="stylesheet" href="css/appcan.icon.css">
+        <link rel="stylesheet" href="css/appcan.control.css">
+        <link rel="stylesheet" href="css/my.css">
+    </head>
+    <body class="um-vp bc-bg" id="userChatBox">
+    
+ 
+        
+    </body>
+    <script src="js/appcan.js"></script>
+    <script src="js/appcan.control.js"></script>
+    </body>
+    <script>
+        var locId = 0;
+    
+        appcan.ready(function() {
+             appcan.window.enableBounce();
+        });
+
+        function showMessage() {
+            if(appcan.locStorage.getVal('nearchatMessageFrom')==appcan.locStorage.getVal('nearchatUsername')) 
+                var message = '<div id="'+locId+'"><table class="user_chat_table my_chat_table"><tr><td style="width: 100%"><div class="user_chat_box my_chat_box" id="myword">'+appcan.locStorage.getVal('nearchatMessage')+'</div></td><td valign="top"><img src="img/user.jpg" class="user_img my_img" ></td></tr></div>';
+            else
+                var message = '<table class="user_chat_table"><tr><td valign="top"><img src="img/user.jpg" class="user_img"  ></td><td><div class="user_chat_box">'+appcan.locStorage.getVal('nearchatMessage')+'</div></td></tr></table>';
+            $('#userChatBox').append(message);
+            window.location.hash = "#"+locId;
+            locId++;
+        }
+
+    </script>
+</html>
